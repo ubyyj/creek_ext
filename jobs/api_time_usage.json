@@ -1,0 +1,41 @@
+{
+    "sources": [{
+        "schema": {
+            "format": "TXT_BY_GROK",
+            "formatAttr": {
+                "pattern": "%{TIMESTAMP_ISO8601:ts}.*,time:%{INT:timeuse}ms] %{WORD:method:string} %{NOTSPACE:api:string}"
+            },
+            "fields": [{
+                "name": "ts",
+                "type": "SQL_TIMESTAMP"
+            }, {
+                "name": "method",
+                "type": "STRING"
+            }, {
+                "name": "api",
+                "type": "STRING"
+            }, {
+                "name": "timeuse",
+                "type": "DOUBLE"
+            }]
+        },
+        "watermark": 0,
+        "name": "t",
+        "eventTime": "ts",
+        "type": "FILE",
+        "attr": {
+            "input": "FILE_PLACE_HOLDER"
+        }
+    }],
+    "sink": {
+        "schema": {
+            "format": "CSV"
+        },
+        "name": "mysink",
+        "type": "STDOUT",
+        "attr": {}
+    },
+    "name": "demojob",
+    "timeType": "EVENTTIME",
+    "sql": "INSERT INTO mysink SQL_PLACE_HOLDER "
+}
